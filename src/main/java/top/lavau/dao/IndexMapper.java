@@ -3,14 +3,14 @@ package top.lavau.dao;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.stereotype.Repository;
-import top.lavau.model.MixedDataModel;
+import top.lavau.entity.MixedData;
 
 import java.util.List;
 
 /**
  * description: 小程序首页数据
- * @author: Leet
- * create: 2020-11-04 17:29
+ * @author Leet
+ * @date 2020-11-04 17:29
  **/
 @Mapper
 @Repository
@@ -26,5 +26,5 @@ public interface IndexMapper {
             "md.stu_id as stuId FROM mixed_data AS md LEFT JOIN type ON md.type_id = type.id LEFT JOIN _user " +
             "AS u ON u.stu_id = md.promulgator_id WHERE is_audit = 1 AND is_available = 1 " +
             "ORDER BY md.gmt_create DESC")
-    List<MixedDataModel> listMiniprogramIndexData();
+    List<MixedData> listMiniprogramIndexData();
 }

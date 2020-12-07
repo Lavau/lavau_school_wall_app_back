@@ -16,9 +16,9 @@ public interface UserService {
 
     /**
      * 根据 username, password 字段从 _user 表中获取用户
-     * @param username username
-     * @param password password
+     * @param nickname nickname
+     * @param enPassword enPassword 被加密的密码
      * @return User
      */
-    User getUserByUsernameAndPassword(String username, String password);
+    User getUserByNicknameAndPassword(String nickname, String enPassword);
 }

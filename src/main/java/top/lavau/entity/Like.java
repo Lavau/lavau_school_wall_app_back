@@ -18,6 +18,6 @@ import java.util.Date;
 @AllArgsConstructor
 public class Like implements Serializable {
     private String id;
-    private String stu_id;
+    private String stuId;
     private Date gmtCreate;
 }

@@ -17,16 +17,18 @@ public interface UserMapper {
      * @param user user
      * @return boolean 添加成功：true；添加失败：false
      */
-    @Insert("")
+    @Insert("INSERT _user (stu_id, stu_name, college_id, avatar_url, nickname, gmt_create, en_password) VALUES " +
+            "(#{user.stuId}, #{user.stuName}, #{user.collegeId}, #{user.avatarUrl}, #{user.nickname}, " +
+            "#{user.gmtCreate}, #{user.enPassword})")
     boolean insertUser(@Param("user") User user);
 
     /**
      * 根据 username, password 字段从 _user 表中获取用户
-     * @param username username
-     * @param password password
+     * @param nickname nickname
+     * @param enPassword enPassword 被加密的密码
      * @return User
      */
     @Select("select open_id as openId, stu_name as stuName, stu_id as stuId, college_id as collegeId, avatar_url " +
-            "as avatarUrl, nickname, gmt_create as gmtCreate from _user where username = #{username} AND password = #{password}")
-    User getUserByUsernameAndPassword(@Param("username") String username, @Param("password") String password);
+            "as avatarUrl, nickname, gmt_create as gmtCreate from _user where nickname = #{nickname} AND en_password = #{enPassword}")
+    User getUserByNicknameAndPassword(@Param("nickname") String nickname, @Param("enPassword") String enPassword);
 }

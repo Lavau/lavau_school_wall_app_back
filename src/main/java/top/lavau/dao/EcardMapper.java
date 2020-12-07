@@ -6,9 +6,10 @@ import top.lavau.entity.Ecard;
 import java.util.List;
 
 /**
- * description:
+ * description
+ *
  * @author Leet
- * create: 2020/11/8 10:49
+ * @date 2020/12/6 21:00
  */
 @Mapper
 public interface EcardMapper {
@@ -33,6 +34,15 @@ public interface EcardMapper {
     Ecard getEcardById(@Param("id") String id);
 
     /**
+     * 根据 stuId 获取 ecard 信息
+     * @param stuId stuId
+     * @return Ecard
+     */
+    @Select("SELECT id, title AS college, description AS stuName, stu_id AS stuId FROM mixed_data WHERE " +
+            "is_available = 1 AND is_audit = 1 AND stu_id = #{stuId} ORDER BY gmt_create DESC")
+    Ecard getEcardByStuId(@Param("stuId") String stuId);
+
+    /**
      * 根据 id 更新 ecard
      * @param ecard ecard
      * @return boolean 更新成功：true；更新失败：false
@@ -47,13 +57,4 @@ public interface EcardMapper {
     @Select("SELECT id, title AS college, description AS stuName, stu_id AS stuId FROM mixed_data WHERE " +
             "is_available = 1 AND is_audit = 1 AND type_id = 7 ORDER BY gmt_create DESC")
     List<Ecard> listEcard();
-
-    /**
-     * 根据 stuId 获取 ecard 信息
-     * @param stuId stuId
-     * @return Ecard
-     */
-    @Select("SELECT id, title AS college, description AS stuName, stu_id AS stuId FROM mixed_data WHERE " +
-            "is_available = 1 AND is_audit = 1 AND stu_id = #{stuId} ORDER BY gmt_create DESC")
-    Ecard getEcardByStuId(@Param("stuId") String stuId);
 }

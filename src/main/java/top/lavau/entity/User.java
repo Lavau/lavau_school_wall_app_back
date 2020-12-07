@@ -2,6 +2,7 @@ package top.lavau.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
@@ -19,7 +20,7 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class User extends MixedData implements Serializable {
+public class User implements Serializable {
     private String openId;
 
     @NotBlank(message = "学生名字为空")
@@ -48,4 +49,9 @@ public class User extends MixedData implements Serializable {
     private String nickname;
 
     private Date gmtCreate;
+    @NotBlank(message = "密码为空")
+    @NotEmpty(message = "密码为空")
+    @NotNull(message = "密码为空")
+    private String enPassword;
+    private Boolean Available;
 }

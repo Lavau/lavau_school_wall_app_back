@@ -2,7 +2,7 @@ package top.lavau.dao;
 
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
-import top.lavau.model.MixedDataModel;
+import top.lavau.entity.MixedData;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public interface MixedDataMapper {
     @Insert("INSERT mixed_data (id, promulgator_id, type_id, title, description, picture_num, gmt_create, " +
             "is_anonymous, stu_id) VALUES (#{md.id}, #{md.promulgatorId}, #{md.typeId}, #{md.title}, " +
             "#{md.description}, #{md.pictureNum}, #{md.gmtCreate}, #{md.Anonymous}, #{md.stuId})")
-    void insertMixedData(@Param("md")MixedDataModel mixedDataModel);
+    void insertMixedData(@Param("md") MixedData mixedDataModel);
 
     /**
      * 根据 id 获取信息
@@ -34,7 +34,7 @@ public interface MixedDataMapper {
             "md.gmt_create AS gmtCreate, is_available AS Available, is_anonymous AS Anonymous, is_audit AS Audit, " +
             "md.stu_id AS stuId, u.avatar_url AS avatarUrl, u.nickname AS nickname FROM mixed_data AS md LEFT JOIN " +
             "_user AS u ON md.promulgator_id = u.stu_id WHERE id = #{id}")
-    MixedDataModel getMixedDataById(@Param("id") String id);
+    MixedData getMixedDataById(@Param("id") String id);
 
     /**
      * 根据 typeId 获取信息
@@ -47,7 +47,7 @@ public interface MixedDataMapper {
             "md.stu_id as stuId FROM mixed_data AS md LEFT JOIN type ON md.type_id = type.id LEFT JOIN _user " +
             "AS u ON u.stu_id = md.promulgator_id WHERE is_audit = 1 AND is_available = 1 AND md.type_id = " +
             "#{typeId} ORDER BY md.gmt_create DESC")
-    List<MixedDataModel> listDataByTypeId(@Param("typeId") String typeId);
+    List<MixedData> listDataByTypeId(@Param("typeId") String typeId);
 
     /**
      * 更改  mixed_data 表
@@ -55,7 +55,7 @@ public interface MixedDataMapper {
      */
     @Update("UPDATE mixed_data SET like_num = #{md.likeNum}, view_num = #{md.viewNum}, comment_num = " +
             "#{md.commentNum}, is_available = #{md.Available} WHERE id = #{md.id}")
-    void updateMixedData(@Param("md") MixedDataModel mixedData);
+    void updateMixedData(@Param("md") MixedData mixedData);
 
     /**
      * 根据 id 删除

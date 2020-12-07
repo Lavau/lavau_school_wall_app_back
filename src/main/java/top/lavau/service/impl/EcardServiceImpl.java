@@ -1,5 +1,8 @@
 package top.lavau.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.lavau.dao.EcardMapper;
@@ -16,6 +19,9 @@ import java.util.List;
  */
 @Service
 public class EcardServiceImpl implements EcardService {
+
+    @Value("${page.size}")
+    private int pageSize;
 
     @Resource
     private EcardMapper ecardMapper;
@@ -46,7 +52,9 @@ public class EcardServiceImpl implements EcardService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<Ecard> listEcard() {
-        return ecardMapper.listEcard();
+    public PageInfo<Ecard> listEcard(int pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
+        List<Ecard> ecardList = ecardMapper.listEcard();
+        return new PageInfo<>(ecardList);
     }
 }

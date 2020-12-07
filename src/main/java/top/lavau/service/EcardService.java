@@ -1,14 +1,13 @@
 package top.lavau.service;
 
-import org.apache.ibatis.annotations.Param;
+import com.github.pagehelper.PageInfo;
 import top.lavau.entity.Ecard;
 
-import java.util.List;
-
 /**
- * description:
+ * description
+ *
  * @author Leet
- * create: 2020/11/8 10:42
+ * @date 2020/12/6 21:06
  */
 public interface EcardService {
 
@@ -24,26 +23,26 @@ public interface EcardService {
      * @param id id
      * @return Ecard
      */
-    Ecard getEcardById(@Param("id") String id);
+    Ecard getEcardById(String id);
 
     /**
      * 根据 stuId 获取 ecard 信息
      * @param stuId stuId
      * @return Ecard
      */
-    Ecard getEcardByStuId(@Param("stuId") String stuId);
+    Ecard getEcardByStuId(String stuId);
 
     /**
      * 根据 id 更新 ecard
      * @param ecard ecard
      * @return boolean 更新成功：true；更新失败：false
      */
-    boolean updateEcard(@Param("e") Ecard ecard);
+    boolean updateEcard(Ecard ecard);
 
     /**
      * 获取一卡通列表
+     * @param pageNum 请求的页码
      * @return List<Ecard>
      */
-    List<Ecard> listEcard();
-
+    PageInfo<Ecard> listEcard(int pageNum);
 }

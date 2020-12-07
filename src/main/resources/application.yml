@@ -1,5 +1,7 @@
 page:
   size: 8
+os:
+  is-windows: true # true: 该环境为 Windows；false：该环境为 Linux
 
 spring:
   datasource:
