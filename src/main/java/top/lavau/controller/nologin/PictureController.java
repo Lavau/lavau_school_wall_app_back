@@ -1,4 +1,4 @@
-package top.lavau.controller;
+package top.lavau.controller.nologin;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +33,8 @@ public class PictureController {
      * 保存头像
      */
     @PostMapping("/avatar")
-    public String savePictureOfAvatar(@RequestParam MultipartFile pictureFile, @RequestParam String stuId) throws MkdirCreateException {
+    public String savePictureOfAvatar(@RequestParam MultipartFile pictureFile, @RequestParam String stuId)
+            throws MkdirCreateException {
         final String PICTURE_FILE_PATH = isWindows ?
                 "F:\\schoolWall\\avatar\\".concat(stuId) : "/root/schoolWall/avatar/".concat(stuId);
         String fileName = pictureFile.getOriginalFilename() == null ? "avatar" : pictureFile.getOriginalFilename();

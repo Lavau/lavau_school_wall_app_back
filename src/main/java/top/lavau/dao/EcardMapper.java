@@ -19,7 +19,7 @@ public interface EcardMapper {
      * @param ecard ecard
      * @return boolean 添加成功：true；添加失败：false
      */
-    @Insert("insert ecard (id, promulgator_id, gmt_create, college, stu_id, ecard_id, stu_name, msg) " +
+    @Insert("insert _ecard (_id, _promulgator_id, _gmt_create, _college, _stu_id, _ecard_id, _stu_name, _msg) " +
             "values (#{e.id}, #{e.promulgatorId}, #{e.gmtCreate}, #{e.college}, #{e.stuId}, #{e.ecardId}, " +
             "#{e.stuName}, #{e.msg})")
     boolean insertEcard(@Param("e") Ecard ecard);

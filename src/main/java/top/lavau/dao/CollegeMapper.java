@@ -18,7 +18,7 @@ public interface CollegeMapper {
      * 获取学院信息
      * @return List<College>
      */
-    @Select("select college_id as collegeId, college_name as collegeName from college " +
-            "where is_available = 1 order by college_id asc")
+    @Select("select _college_id as collegeId, _college_name as collegeName from _college " +
+            "where _is_available = 1 order by _college_id asc")
     List<College> listCollege();
 }

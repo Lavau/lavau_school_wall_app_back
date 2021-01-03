@@ -18,10 +18,12 @@ public class Result<T> {
      * 状态码
      */
     private String code;
+
     /**
      * 返回的信息
      */
     private String msg;
+
     /**
      * 返回的泛型结果
      */

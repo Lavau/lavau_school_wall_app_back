@@ -1,12 +1,13 @@
-package top.lavau.controller;
+package top.lavau.controller.nologin;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.lavau.service.CollegeService;
+
+import javax.annotation.Resource;
 
 /**
  * description
@@ -19,7 +20,7 @@ import top.lavau.service.CollegeService;
 @RequestMapping("/app/college")
 public class CollegeController {
 
-    @Autowired
+    @Resource
     private CollegeService collegeService;
 
     @GetMapping("/list")

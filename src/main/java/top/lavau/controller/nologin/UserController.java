@@ -1,4 +1,4 @@
-package top.lavau.controller;
+package top.lavau.controller.nologin;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
@@ -39,7 +39,8 @@ public class UserController {
     @PostMapping("/register")
     public String register(@Valid User user, BindingResult validResult) {
         if (validResult.hasErrors()) {
-            return JSON.toJSONString(new Result<>(ResultCodeEnum.VALID_ERROR.getCode(), "填写不规范，请重新填写", null));
+            return JSON.toJSONString(new Result<>(ResultCodeEnum.VALID_ERROR.getCode(),
+                    ResultCodeEnum.VALID_ERROR.getExplanation(), null));
         }
 
         String avatarUrl = "http://localhost:8080/avatar/".concat(user.getStuId());

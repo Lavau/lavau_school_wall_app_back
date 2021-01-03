@@ -18,7 +18,7 @@ public enum ResultCodeEnum {
      * explanation: valid error
      * 含义：JSR-303 校验出错
      */
-    VALID_ERROR("W0600", "valid error"),
+    VALID_ERROR("W0600", "验证出错"),
     /**
      * code: W0601
      * explanation: 图片保存失败

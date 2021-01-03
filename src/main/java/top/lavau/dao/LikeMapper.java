@@ -17,7 +17,7 @@ public interface LikeMapper {
      * @param like like
      * @return boolean 添加成功：true；添加失败：false
      */
-    @Insert("INSERT _like (id, stu_id, gmt_create) VALUES (#{like.id}, #{like.stuId}, #{like.gmtCreate})")
+    @Insert("INSERT _like (_id, _stu_id, _gmt_create) VALUES (#{like.id}, #{like.stuId}, #{like.gmtCreate})")
     boolean insertLike(@Param("like")Like like);
 
     /**
@@ -26,6 +26,6 @@ public interface LikeMapper {
      * @param stuId stuId
      * @return boolean 删除成功：true；删除失败：false
      */
-    @Delete("DELETE FROM _like WHERE id = #{id} AND stu_id = #{stuId}")
+    @Delete("DELETE FROM _like WHERE _id = #{id} AND _stu_id = #{stuId}")
     boolean deleteLikeByIdAndStuId(@Param("id") String id, @Param("stuId") String stuId);
 }
