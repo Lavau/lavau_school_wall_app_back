@@ -23,13 +23,13 @@ public interface UserMapper {
     boolean insertUser(@Param("user") User user);
 
     /**
-     * 根据 username, password 字段从 _user 表中获取用户
-     * @param nickname nickname
+     * 根据 _stu_id, _en_password 字段从 _user 表中获取用户
+     * @param stuId stuId
      * @param enPassword enPassword 被加密的密码
      * @return User
      */
-    @Select("select _open_id as openId, _stu_name as stuName, _stu_id as stuId, _college_id as collegeId, _avatar_url " +
-            "as avatarUrl, _nickname AS nickname, _gmt_create as gmtCreate from _user where _nickname = #{nickname} " +
+    @Select("SELECT _open_id as openId, _stu_name as stuName, _stu_id as stuId, _college_id as collegeId, _avatar_url " +
+            "as avatarUrl, _nickname AS nickname, _gmt_create as gmtCreate from _user where _stu_id = #{stuId} " +
             "AND _en_password = #{enPassword}")
-    User getUserByNicknameAndPassword(@Param("nickname") String nickname, @Param("enPassword") String enPassword);
+    User getUserByStuIdAndPassword(@Param("stuId") String stuId, @Param("enPassword") String enPassword);
 }

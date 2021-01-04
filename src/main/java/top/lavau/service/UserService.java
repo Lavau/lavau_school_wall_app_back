@@ -15,10 +15,10 @@ public interface UserService {
     boolean insertUser(User user);
 
     /**
-     * 根据 username, password 字段从 _user 表中获取用户
-     * @param nickname nickname
+     * 根据 _stu_id, _en_password 字段从 _user 表中获取用户
+     * @param stuId stuId
      * @param enPassword enPassword 被加密的密码
      * @return User
      */
-    User getUserByNicknameAndPassword(String nickname, String enPassword);
+    User getUserByStuIdAndPassword(String stuId, String enPassword);
 }

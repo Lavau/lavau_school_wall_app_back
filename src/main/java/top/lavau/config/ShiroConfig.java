@@ -50,11 +50,11 @@ public class ShiroConfig {
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 
         // 设置默认登录的 url（若登录失败，则转到此）
-        shiroFilterFactoryBean.setLoginUrl("/app/login/error");
+        shiroFilterFactoryBean.setLoginUrl("/app/noLogin/error");
         // 设置登录认证成功后默认转到的 url
 //        shiroFilterFactoryBean.setSuccessUrl("/admin/index");
         // 设置权限认证失败时转到的 url
-        shiroFilterFactoryBean.setUnauthorizedUrl("/app/noAccess");
+        shiroFilterFactoryBean.setUnauthorizedUrl("/app/noLogin/noAccess");
 
         /*
          * anon：匿名用户可访问

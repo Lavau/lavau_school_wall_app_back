@@ -20,20 +20,20 @@ import java.util.Date;
 /**
  * description user controller
  *      用户注册
- *      用户（退出）登录
  *
  * @author Leet
  * @date 2020-12-06 21:44
  **/
 @Slf4j
 @RestController
-@RequestMapping("/app/user")
+@RequestMapping("/app/noLogin/user")
 public class UserController {
 
     @Resource
     private UserService userService;
 
     /**
+     * /app/noLogin/user/register
      * 用户注册
      */
     @PostMapping("/register")
@@ -43,7 +43,7 @@ public class UserController {
                     ResultCodeEnum.VALID_ERROR.getExplanation(), null));
         }
 
-        String avatarUrl = "http://localhost:8080/avatar/".concat(user.getStuId());
+        String avatarUrl = "http://localhost:8080/avatar/" + user.getStuId();
         user.setAvatarUrl(avatarUrl);
         user.setGmtCreate(new Date());
         user.setEnPassword(PasswordUtil.encrypt(user.getEnPassword()));
@@ -52,8 +52,8 @@ public class UserController {
         log.info("At {}, {} register successfully!",
                 new SimpleDateFormat("yyyy-MM-dd hh:mm").format(user.getGmtCreate()), user.getStuId());
 
-        return JSON.toJSONString(new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), null));
+        Result<Object> result = new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), null);
+        return JSON.toJSONString(result);
     }
-
 
 }

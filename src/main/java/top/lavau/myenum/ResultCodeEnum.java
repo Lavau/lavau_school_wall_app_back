@@ -15,7 +15,7 @@ public enum ResultCodeEnum {
 
     /**
      * code: W0600
-     * explanation: valid error
+     * explanation: 验证出错
      * 含义：JSR-303 校验出错
      */
     VALID_ERROR("W0600", "验证出错"),
@@ -24,6 +24,21 @@ public enum ResultCodeEnum {
      * explanation: 图片保存失败
      */
     PICTURE_SAVE_UNSUCCESSFULLY("W0601", "图片保存失败"),
+    /**
+     * code: W0602
+     * explanation: 登录成功
+     */
+    LOGIN_SUCCESSFULLY("W0602", "登录成功"),
+    /**
+     * code: W0603
+     * explanation: 登录失败，请检查填写
+     */
+    LOGIN_UNSUCCESSFULLY("W0603", "登录失败，请检查填写"),
+    /**
+     * code: W0604
+     * explanation: 无权访问
+     */
+    NO_ACCESS("W0604", "无权访问"),
     /**
      * code: 0000
      * explanation: ok

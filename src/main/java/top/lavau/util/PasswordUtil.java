@@ -13,7 +13,7 @@ public class PasswordUtil {
     private static final int HASH_ITERATIONS = 1024;
 
     /**
-     * 加密管理员的登录密码
+     * 加密登录密码
      * （采用 MD5 哈希加密，理论上，不能反向解密）
      * @param username 用户名
      * @param password 密码

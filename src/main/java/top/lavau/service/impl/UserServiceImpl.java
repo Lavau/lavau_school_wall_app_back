@@ -1,5 +1,6 @@
 package top.lavau.service.impl;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.lavau.dao.UserMapper;
@@ -9,11 +10,12 @@ import top.lavau.service.UserService;
 import javax.annotation.Resource;
 
 /**
- * description
+ * description: UserService 的实现类
  *
  * @author leet
  * @date 2020/12/1 20:35
  */
+@Slf4j
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -28,7 +30,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public User getUserByNicknameAndPassword(String nickname, String enPassword) {
-        return userMapper.getUserByNicknameAndPassword(nickname, enPassword);
+    public User getUserByStuIdAndPassword(String stuId, String enPassword) {
+        return userMapper.getUserByStuIdAndPassword(stuId, enPassword);
     }
 }
