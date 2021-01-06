@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 /**
  * description 处理结果
  *
@@ -27,5 +29,13 @@ public class Result<T> {
     /**
      * 返回的泛型结果
      */
-    private T t;
+    private T data;
+
+    @Data
+    @AllArgsConstructor
+    public static class MyPage<P> {
+        private int pageNum;
+        private int pages;
+        private List<P> list;
+    }
 }

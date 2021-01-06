@@ -1,58 +1,70 @@
 package top.lavau.controller.nologin;
 
-import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import top.lavau.entity.result.Result;
 import top.lavau.exception.MkdirCreateException;
-import top.lavau.myenum.ResultCodeEnum;
+import top.lavau.util.FileUtil;
 
-import java.io.File;
-import java.io.IOException;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 
 /**
  * description Picture controller
+ *      保存头像
  *
  * @author Leet
  * @date 2020-12-07 12:56
  **/
 @Slf4j
 @RestController
-@RequestMapping("/app/picture")
+@RequestMapping("/app/noLogin/picture")
 public class PictureController {
 
-    @Value("${os.is-windows}")
-    private boolean isWindows;
-
     /**
-     * 保存头像
+     * /app/login/picture/obtain
+     * 获取图片
+     * @param pictureUrl pictureUrl
+     * @return
+     * @throws MkdirCreateException
      */
-    @PostMapping("/avatar")
-    public String savePictureOfAvatar(@RequestParam MultipartFile pictureFile, @RequestParam String stuId)
-            throws MkdirCreateException {
-        final String PICTURE_FILE_PATH = isWindows ?
-                "F:\\schoolWall\\avatar\\".concat(stuId) : "/root/schoolWall/avatar/".concat(stuId);
-        String fileName = pictureFile.getOriginalFilename() == null ? "avatar" : pictureFile.getOriginalFilename();
-        File file = new File(PICTURE_FILE_PATH, fileName);
-        if(!file.exists()){
-            if (!file.mkdirs()) {
-                throw new MkdirCreateException();
-            }
-        }
-
+    /**
+     * /miniprogram/picture（GET）
+     * 向小程序传送请求的图片
+     * @param typeId 分类号
+     * @param uuid uuid
+     * @param fileName 文件名
+     * @param response 处理的响应流
+     */
+    @RequestMapping(value = {"/app/login/picture/obtain"})
+    public void findPicture(String typeId, String uuid, String fileName, HttpServletResponse response) {
+        InputStream inputStream = null;
+        OutputStream writer = null;
         try {
-            pictureFile.transferTo(file);
-            return JSON.toJSONString(new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), null));
-        } catch (IOException ioException) {
-            log.info("url: /app/picture/avatar; stuId: {}; Exception msg: {}", stuId, ioException.getMessage());
-            Result<Object> result = new Result<>(ResultCodeEnum.PICTURE_SAVE_UNSUCCESSFULLY.getCode(),
-                    ResultCodeEnum.PICTURE_SAVE_UNSUCCESSFULLY.getExplanation(), null);
-            return JSON.toJSONString(result);
+            inputStream = new FileInputStream(new File(
+                    FileUtil.getRootDirectory(typeId, uuid), fileName));
+            writer = response.getOutputStream();
+
+            byte[] buf = new byte[1024];
+            int len;
+            while ((len = inputStream.read(buf)) != -1) {
+                writer.write(buf, 0, len);
+            }
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally{
+            try {
+                if(inputStream != null){
+                    inputStream.close();
+                }
+                if(writer != null){
+                    writer.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

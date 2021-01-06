@@ -10,9 +10,9 @@ import top.lavau.entity.MixedData;
 public interface IndexService {
 
     /**
-     * 获取小程序首页显示的数据
+     * 获取首页显示的数据
      * @param pageNum 第几页的数据
      * @return List<MixedDataModel>
      */
-    PageInfo<MixedData> listMiniprogramIndexData(int pageNum);
+    PageInfo<MixedData> listIndexData(int pageNum);
 }

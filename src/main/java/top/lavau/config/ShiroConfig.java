@@ -6,8 +6,8 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import top.lavau.realm.MyRealm;
 
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import java.util.Map;
  * @author Leet
  * @date 2020-12-01 17:28
  **/
-@Configuration
+@EnableAutoConfiguration
 public class ShiroConfig {
 
     @Bean
@@ -66,6 +66,7 @@ public class ShiroConfig {
         //设置访问各 url 的权限
         Map<String, String> filterChain = new HashMap<>(5);
         filterChain.put("/app/login/**", "authc");
+        filterChain.put("/app/noLogin/**", "anon");
 
         shiroFilterFactoryBean.setFilterChainDefinitionMap(filterChain);
 
