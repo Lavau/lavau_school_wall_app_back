@@ -27,34 +27,31 @@ import java.io.IOException;
 @RequestMapping("/app/login/picture")
 public class PictureController {
 
-    @Value("${os.is-windows}")
-    private boolean isWindows;
-
     /**
      * /app/login/picture/avatar
      * 保存头像
      */
-    @PostMapping("/avatar")
-    public String savePictureOfAvatar(@RequestParam MultipartFile pictureFile, @RequestParam String stuId)
-            throws MkdirCreateException {
-        final String PICTURE_FILE_PATH = isWindows ?
-                "F:\\schoolWall\\avatar\\".concat(stuId) : "/root/schoolWall/avatar/".concat(stuId);
-        String fileName = pictureFile.getOriginalFilename() == null ? "avatar" : pictureFile.getOriginalFilename();
-        File file = new File(PICTURE_FILE_PATH, fileName);
-        if(!file.exists()){
-            if (!file.mkdirs()) {
-                throw new MkdirCreateException();
-            }
-        }
-
-        try {
-            pictureFile.transferTo(file);
-            return JSON.toJSONString(new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), null));
-        } catch (IOException ioException) {
-            log.info("url: /app/picture/avatar; stuId: {}; Exception msg: {}", stuId, ioException.getMessage());
-            Result<Object> result = new Result<>(ResultCodeEnum.PICTURE_SAVE_UNSUCCESSFULLY.getCode(),
-                    ResultCodeEnum.PICTURE_SAVE_UNSUCCESSFULLY.getExplanation(), null);
-            return JSON.toJSONString(result);
-        }
-    }
+//    @PostMapping("/avatar")
+//    public String savePictureOfAvatar(@RequestParam MultipartFile pictureFile, @RequestParam String stuId)
+//            throws MkdirCreateException {
+//        final String PICTURE_FILE_PATH = isWindows ?
+//                "F:\\schoolWall\\avatar\\".concat(stuId) : "/root/schoolWall/avatar/".concat(stuId);
+//        String fileName = pictureFile.getOriginalFilename() == null ? "avatar" : pictureFile.getOriginalFilename();
+//        File file = new File(PICTURE_FILE_PATH, fileName);
+//        if(!file.exists()){
+//            if (!file.mkdirs()) {
+//                throw new MkdirCreateException();
+//            }
+//        }
+//
+//        try {
+//            pictureFile.transferTo(file);
+//            return JSON.toJSONString(new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), null));
+//        } catch (IOException ioException) {
+//            log.info("url: /app/picture/avatar; stuId: {}; Exception msg: {}", stuId, ioException.getMessage());
+//            Result<Object> result = new Result<>(ResultCodeEnum.PICTURE_SAVE_UNSUCCESSFULLY.getCode(),
+//                    ResultCodeEnum.PICTURE_SAVE_UNSUCCESSFULLY.getExplanation(), null);
+//            return JSON.toJSONString(result);
+//        }
+//    }
 }

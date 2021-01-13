@@ -1,10 +1,8 @@
-package top.lavau.controller.nologin;
+package top.lavau.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import top.lavau.exception.MkdirCreateException;
 import top.lavau.util.FileUtil;
 
 import javax.servlet.http.HttpServletResponse;
@@ -12,33 +10,16 @@ import java.io.*;
 
 /**
  * description Picture controller
- *      保存头像
  *
  * @author Leet
- * @date 2020-12-07 12:56
  **/
 @Slf4j
-@RestController
-@RequestMapping("/app/noLogin/picture")
+@RestController("noLoginPictureController")
+@RequestMapping("/app")
 public class PictureController {
 
-    /**
-     * /app/login/picture/obtain
-     * 获取图片
-     * @param pictureUrl pictureUrl
-     * @return
-     * @throws MkdirCreateException
-     */
-    /**
-     * /miniprogram/picture（GET）
-     * 向小程序传送请求的图片
-     * @param typeId 分类号
-     * @param uuid uuid
-     * @param fileName 文件名
-     * @param response 处理的响应流
-     */
-    @RequestMapping(value = {"/app/login/picture/obtain"})
-    public void findPicture(String typeId, String uuid, String fileName, HttpServletResponse response) {
+    @RequestMapping("/picture/obtain")
+    public void sendPictureToClient(String typeId, String uuid, String fileName, HttpServletResponse response) {
         InputStream inputStream = null;
         OutputStream writer = null;
         try {
