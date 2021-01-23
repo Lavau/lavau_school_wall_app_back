@@ -17,8 +17,7 @@ import java.util.List;
 public class FileUtil {
 
     /**
-     * 根据系统的生成不同的路径
-     * @return file path
+     * 生成不同的路径
      */
     public static String getRootDirectory(String typeId, String uuid){
         return new StringBuilder("F:\\schoolWall\\").append(typeId).append("\\").append(uuid).toString();
@@ -69,11 +68,15 @@ public class FileUtil {
         }
     }
 
+    public static void main(String[] args) {
+        findAllPictureNames("7", "058579a6feec26a4d5ca1811b85676c7");
+    }
+
     public static List<String> obtainListOfPictureUrl(String typeId, String uuid){
         List<String> pictureNameList = FileUtil.findAllPictureNames(typeId, uuid);
         List<String> pictureUrlList = new ArrayList<>();
         for(String pictureName : pictureNameList){
-            pictureUrlList.add(new StringBuilder("http://127.0.0.1:8080/app/picture/obtain?typeId=").append(typeId).
+            pictureUrlList.add(new StringBuilder("http://192.168.1.105:8080/app/picture/obtain?typeId=").append(typeId).
                     append("&uuid=").append(uuid).append("&fileName=").append(pictureName).toString());
         }
         return pictureUrlList;

@@ -39,6 +39,6 @@ public class PasswordUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(encrypt("a", "a"));
+        System.out.println(encrypt("leet niu bi!!", "12345678"));
     }
 }

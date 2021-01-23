@@ -6,8 +6,9 @@ import org.apache.shiro.mgt.SecurityManager;
 import org.apache.shiro.realm.Realm;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.mgt.DefaultWebSecurityManager;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 import top.lavau.realm.MyRealm;
 
 import java.util.HashMap;
@@ -19,7 +20,7 @@ import java.util.Map;
  * @author Leet
  * @date 2020-12-01 17:28
  **/
-@EnableAutoConfiguration
+@Configuration
 public class ShiroConfig {
 
     @Bean
@@ -31,21 +32,21 @@ public class ShiroConfig {
     }
 
     @Bean
-    public Realm realm(CredentialsMatcher credentialsMatcher) {
+    public Realm realm(@Qualifier("credentialsMatcher") CredentialsMatcher credentialsMatcher) {
         MyRealm realm = new MyRealm();
         realm.setCredentialsMatcher(credentialsMatcher);
         return new MyRealm();
     }
 
     @Bean
-    public SecurityManager securityManager(Realm realm) {
+    public SecurityManager securityManager(@Qualifier("realm") Realm realm) {
         DefaultWebSecurityManager securityManager = new DefaultWebSecurityManager();
         securityManager.setRealm(realm);
         return securityManager;
     }
 
     @Bean
-    public ShiroFilterFactoryBean shiroFilter(SecurityManager securityManager) {
+    public ShiroFilterFactoryBean shiroFilter(@Qualifier("securityManager") SecurityManager securityManager) {
         ShiroFilterFactoryBean shiroFilterFactoryBean = new ShiroFilterFactoryBean();
         shiroFilterFactoryBean.setSecurityManager(securityManager);
 

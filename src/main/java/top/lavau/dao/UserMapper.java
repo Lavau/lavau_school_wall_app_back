@@ -8,7 +8,6 @@ import top.lavau.entity.User;
 
 /**
  * @author Leet
- * create: 2020/11/5 21:47
  */
 @Mapper
 public interface UserMapper {

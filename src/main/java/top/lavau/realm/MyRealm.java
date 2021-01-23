@@ -6,10 +6,10 @@ import org.apache.shiro.authz.AuthorizationInfo;
 import org.apache.shiro.realm.AuthorizingRealm;
 import org.apache.shiro.subject.PrincipalCollection;
 import org.apache.shiro.util.ByteSource;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import top.lavau.entity.User;
 import top.lavau.service.UserService;
+import top.lavau.util.PasswordUtil;
 
 import javax.annotation.Resource;
 
@@ -35,11 +35,12 @@ public class MyRealm extends AuthorizingRealm {
             throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
         User user = userService.getUserByStuIdAndPassword(usernamePasswordToken.getUsername(),
-                String.valueOf(usernamePasswordToken.getPassword()));
+                PasswordUtil.encrypt(String.valueOf(usernamePasswordToken.getPassword())));
         if (user == null) {
             throw new AccountException();
         }
         ByteSource saltOfCredential = ByteSource.Util.bytes(user.getStuId());
-        return new SimpleAuthenticationInfo(user, user.getEnPassword(), saltOfCredential, getName());
+        return new SimpleAuthenticationInfo(user, String.valueOf(usernamePasswordToken.getPassword()),
+                saltOfCredential, getName());
     }
 }
