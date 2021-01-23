@@ -9,26 +9,16 @@ import java.util.List;
 /**
  * description:
  * @author Leet
- * create: 2020/11/8 11:00
  */
 @Mapper
 @Repository("miniprogramMixedDataMapper")
 public interface MixedDataMapper {
 
-    /**
-     * 插入数据
-     * @param mixedDataModel mixedDataModel
-     */
-    @Insert("INSERT mixed_data (id, promulgator_id, type_id, title, description, picture_num, gmt_create, " +
-            "is_anonymous, stu_id) VALUES (#{md.id}, #{md.promulgatorId}, #{md.typeId}, #{md.title}, " +
+    @Insert("INSERT _mixed_data (_id, _promulgator_id, _type_id, _title, _description, _picture_num, _gmt_create, " +
+            "_is_anonymous, _stu_id) VALUES (#{md.id}, #{md.promulgatorId}, #{md.typeId}, #{md.title}, " +
             "#{md.description}, #{md.pictureNum}, #{md.gmtCreate}, #{md.Anonymous}, #{md.stuId})")
     void insertMixedData(@Param("md") MixedData mixedDataModel);
 
-    /**
-     * 根据 id 获取信息
-     * @param id id
-     * @return MixedDataModel
-     */
     @Select("SELECT md.id AS id, i_id AS iId, promulgator_id AS promulgatorId, type_id AS typeId, title, description, " +
             "picture_num AS pictureNum, like_num AS likeNum, view_num AS viewNum, comment_num AS commentNum, " +
             "md.gmt_create AS gmtCreate, is_available AS Available, is_anonymous AS Anonymous, is_audit AS Audit, " +

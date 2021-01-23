@@ -7,12 +7,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.lavau.entity.Ecard;
+import top.lavau.entity.User;
 import top.lavau.entity.result.Result;
 import top.lavau.service.EcardService;
 import top.lavau.service.UserService;
+import top.lavau.util.UuidUtil;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Date;
 
 /**
  * description: 一卡通：添加入库、获取详情、认领
@@ -20,7 +23,6 @@ import javax.validation.Valid;
  */
 @Slf4j
 @RestController
-@RequestMapping("/app/login/ecard")
 public class EcardController {
 
     @Resource
@@ -29,17 +31,30 @@ public class EcardController {
     @Resource
     private UserService userService;
 
-    @PostMapping("/publish")
+    @PostMapping("/app/login/ecard/publish")
     public String insertEcard(@Valid Ecard ecard, BindingResult bindingResult){
         Result<Object> result = new Result<>();
 
         if (bindingResult.hasErrors()) {
+            result.setData(false);
             result.setMsg("填写的信息有误");
             return JSON.toJSONString(result);
         }
 
+        completeEcardInfo(ecard);
+        ecardService.insertEcard(ecard);
+
+        log.info("ecard data of inserted database: {}", ecard.toString());
+
         result.setMsg("替 Ta 谢谢你！(*^_^*)");
+        result.setData(true);
         return JSON.toJSONString(result);
+    }
+
+    private void completeEcardInfo(Ecard ecard) {
+        ecard.setId(UuidUtil.acquireUuid());
+        ecard.setPromulgatorId(User.obtainCurrentUser().getStuId());
+        ecard.setGmtCreate(new Date());
     }
 
 //    /**

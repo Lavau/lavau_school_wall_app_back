@@ -9,16 +9,10 @@ import java.util.List;
  * description
  *
  * @author Leet
- * @date 2020/12/6 21:00
  */
 @Mapper
 public interface EcardMapper {
 
-    /**
-     * 向 ecard 表中添加一卡通数据
-     * @param ecard ecard
-     * @return boolean 添加成功：true；添加失败：false
-     */
     @Insert("insert _ecard (_id, _promulgator_id, _gmt_create, _college, _stu_id, _ecard_id, _stu_name, _msg) " +
             "values (#{e.id}, #{e.promulgatorId}, #{e.gmtCreate}, #{e.college}, #{e.stuId}, #{e.ecardId}, " +
             "#{e.stuName}, #{e.msg})")

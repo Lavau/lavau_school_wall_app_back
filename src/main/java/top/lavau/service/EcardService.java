@@ -7,15 +7,9 @@ import top.lavau.entity.Ecard;
  * description
  *
  * @author Leet
- * @date 2020/12/6 21:06
  */
 public interface EcardService {
 
-    /**
-     * 向 ecard 表中添加一卡通数据
-     * @param ecard ecard
-     * @return boolean 添加成功：true；添加失败：false
-     */
     boolean insertEcard(Ecard ecard);
 
     /**

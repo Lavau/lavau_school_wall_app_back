@@ -3,6 +3,7 @@ package top.lavau.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.apache.shiro.SecurityUtils;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotEmpty;
@@ -20,6 +21,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class User implements Serializable {
+
+    public static User obtainCurrentUser() {
+        return (User)SecurityUtils.getSubject().getPrincipal();
+    }
+
     private String openId;
 
     @NotBlank(message = "学生名字为空")

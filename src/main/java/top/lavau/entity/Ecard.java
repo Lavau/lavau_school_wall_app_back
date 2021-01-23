@@ -21,9 +21,6 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Ecard implements Serializable {
-    @NotBlank(message = "id为空")
-    @NotEmpty(message = "id为空")
-    @NotNull(message = "id为空")
     private String id;
 
     private Integer iId;
@@ -35,18 +32,12 @@ public class Ecard implements Serializable {
     @NotNull(message = "学院名为空")
     private String college;
 
-    /**
-     * 被拾的一卡通的失主的学号
-     */
     @NotBlank(message = "该一卡通的学号为空")
     @NotEmpty(message = "该一卡通的学号为空")
     @NotNull(message = "该一卡通的学号为空")
     @Size(max = 9, message = "stuId 不符合规范")
     private String stuId;
 
-    /**
-     * 被拾的一卡通的失主的名字
-     */
     @NotBlank(message = "该一卡通的学生号为空")
     @NotEmpty(message = "该一卡通的学生号为空")
     @NotNull(message = "该一卡通的学生号为空")
@@ -55,7 +46,7 @@ public class Ecard implements Serializable {
     @NotBlank(message = "该一卡通的id为空")
     @NotEmpty(message = "该一卡通的id为空")
     @NotNull(message = "该一卡通的id为空")
-    @Size(max = 9, message = "ecard 不符合规范")
+    @Size(max = 10, message = "ecard 不符合规范")
     private String ecardId;
 
     @NotBlank(message = "该一卡通的认领信息为空")
