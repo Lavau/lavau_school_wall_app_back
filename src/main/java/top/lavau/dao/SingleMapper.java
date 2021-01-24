@@ -1,17 +1,16 @@
-//package top.lavau.dao;
-//
-//import org.apache.ibatis.annotations.*;
-//import org.springframework.stereotype.Repository;
-//import top.lavau.model.SingleModel;
-//
-///**
-// * description；
-// * @author Leet
-// * create: 2020/11/8 14:10
-// */
-//@Mapper
-//@Repository("miniprogramSingleMapper")
-//public interface SingleMapper {
+package top.lavau.dao;
+
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import top.lavau.entity.Single;
+
+/**
+ * description；
+ * @author Leet
+ */
+@Mapper
+public interface SingleMapper {
 //
 //    /**
 //     * 根据 id 获取
@@ -25,19 +24,15 @@
 //            "nickname FROM mixed_data AS md LEFT JOIN single ON single.id = md.id LEFT JOIN _user AS u ON u.stu_id = " +
 //            "md.promulgator_id WHERE md.id = #{id} ")
 //    SingleModel getSingleById(@Param("id") String id);
-//
-//    /**
-//     * 添加
-//     * @param single single
-//     */
-//    @Insert("insert single (id, height, weight, speciality, interest, contact_information) values (#{s.id}, " +
-//            "#{s.height}, #{s.weight}, #{s.speciality}, #{s.interest}, #{s.contactInformation})")
-//    void insertSingle(@Param("s") SingleModel single);
-//
+
+    @Insert("insert _single (_id, _height, _weight, _speciality, _interest, _contact_information) values (#{s.id}, " +
+            "#{s.height}, #{s.weight}, #{s.speciality}, #{s.interest}, #{s.contactInformation})")
+    boolean insertSingle(@Param("s") Single single);
+
 //    /**
 //     * 根据 id 删除
 //     * @param id id
 //     */
 //    @Delete("DELETE FROM single WHERE id = #{id}")
 //    void deleteSingleById(@Param("id") String id);
-//}
+}

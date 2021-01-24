@@ -4,13 +4,11 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.lavau.entity.Ecard;
 import top.lavau.entity.User;
 import top.lavau.entity.result.Result;
 import top.lavau.service.EcardService;
-import top.lavau.service.UserService;
 import top.lavau.util.UuidUtil;
 
 import javax.annotation.Resource;
@@ -28,11 +26,8 @@ public class EcardController {
     @Resource
     private EcardService ecardService;
 
-    @Resource
-    private UserService userService;
-
     @PostMapping("/app/login/ecard/publish")
-    public String insertEcard(@Valid Ecard ecard, BindingResult bindingResult){
+    public String addEcardInfoToDatabase(@Valid Ecard ecard, BindingResult bindingResult){
         Result<Object> result = new Result<>();
 
         if (bindingResult.hasErrors()) {

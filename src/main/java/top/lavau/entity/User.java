@@ -15,7 +15,6 @@ import java.util.Date;
  * description _user 表对应的实体类
  *
  * @author Leet
- * @date 2020-12-01 16:08
  **/
 @Data
 @NoArgsConstructor
