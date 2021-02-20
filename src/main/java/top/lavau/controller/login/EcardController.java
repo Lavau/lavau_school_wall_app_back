@@ -10,8 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 import top.lavau.entity.Ecard;
 import top.lavau.entity.User;
 import top.lavau.entity.result.Result;
-import top.lavau.myenum.ResultCodeEnum;
-import top.lavau.myenum.TypeEnum;
 import top.lavau.service.EcardService;
 import top.lavau.util.UuidUtil;
 
@@ -57,7 +55,7 @@ public class EcardController {
     }
 
     @GetMapping("/app/login/ecard/detail")
-    public String detailEcard(@RequestParam String id) {
+    public String obtainDetailInfoOfEcard(@RequestParam String id) {
         Ecard ecard = ecardService.getEcardById(id);
         Result<Ecard> result = new Result<>();
 

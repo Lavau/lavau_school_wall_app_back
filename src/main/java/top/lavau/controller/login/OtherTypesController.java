@@ -4,10 +4,13 @@ import com.alibaba.fastjson.JSON;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import top.lavau.entity.Ecard;
+import top.lavau.entity.MixedData;
 import top.lavau.entity.result.Result;
 import top.lavau.service.OtherTypesService;
 import top.lavau.util.FileUtil;
@@ -17,9 +20,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.List;
 
-/**
- * description
- **/
 @Slf4j
 @RestController
 public class OtherTypesController {
@@ -46,6 +46,20 @@ public class OtherTypesController {
 
         result.setData(true);
         result.setMsg("发布成功");
+        return JSON.toJSONString(result);
+    }
+
+    @GetMapping("/app/login/others/detail")
+    public String obtainDetailInfo(@RequestParam String id, @RequestParam Integer typeId) {
+        MixedData mixedData = otherTypesService.getMixedDataByIdAndTypeId(id, typeId);
+
+        log.info("typeId: {}, id: {}, mixedData:{}", typeId, id, mixedData.toString());
+
+        Result<MixedData> result = new Result<>();
+
+        result.setData(mixedData);
+        result.setSuccess(true);
+
         return JSON.toJSONString(result);
     }
 

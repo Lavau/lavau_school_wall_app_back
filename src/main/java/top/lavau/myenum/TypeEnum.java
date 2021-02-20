@@ -2,12 +2,6 @@ package top.lavau.myenum;
 
 import lombok.Getter;
 
-/**
- * description
- *
- * @author Leet
- * @date 2020-12-01 14:40
- **/
 @Getter
 public enum TypeEnum {
     /**

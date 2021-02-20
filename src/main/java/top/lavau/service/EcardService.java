@@ -1,6 +1,5 @@
 package top.lavau.service;
 
-import com.github.pagehelper.PageInfo;
 import top.lavau.entity.Ecard;
 
 public interface EcardService {

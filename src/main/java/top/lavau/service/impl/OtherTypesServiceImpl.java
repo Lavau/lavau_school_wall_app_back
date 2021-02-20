@@ -2,6 +2,7 @@ package top.lavau.service.impl;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import top.lavau.controller.login.OtherTypesController.Form;
 import top.lavau.dao.LostAndFoundMapper;
 import top.lavau.dao.MixedDataMapper;
@@ -16,11 +17,6 @@ import top.lavau.service.OtherTypesService;
 import javax.annotation.Resource;
 import java.util.Date;
 
-
-/**
- * description: OtherTypesService 的实现类
- * @author Leet
- **/
 @Slf4j
 @Service
 public class OtherTypesServiceImpl implements OtherTypesService {
@@ -31,11 +27,11 @@ public class OtherTypesServiceImpl implements OtherTypesService {
     @Resource
     private MixedDataMapper mixedDataMapper;
     
-    @
-    Resource
+    @Resource
     private SingleMapper singleMapper;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void insertTypeData(Form form) {
         insertMixedData(form);
 
@@ -46,7 +42,6 @@ public class OtherTypesServiceImpl implements OtherTypesService {
         if (form.getTypeId().equals(TypeEnum.SINGLE.getTypeId())) {
             insertSingle(form);
         }
-        
     }
 
     private void insertSingle(Form form) {
@@ -77,5 +72,26 @@ public class OtherTypesServiceImpl implements OtherTypesService {
         lostAndFound.setId(form.getId());
         lostAndFound.setMsg(form.getMsg());
         lostAndFoundMapper.insertLostAndFound(lostAndFound);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public MixedData getMixedDataByIdAndTypeId(String id, Integer typeId) {
+        boolean flag = typeId.equals(TypeEnum.PERSONAL_PUBLICITY.getTypeId()) ||
+                typeId.equals(TypeEnum.THANK_OR_RIDICULE.getTypeId()) ||
+                typeId.equals(TypeEnum.SEEK_HELP.getTypeId());
+        if (flag) {
+            return mixedDataMapper.getMixedDataById(id);
+        }
+
+        if (typeId.equals(TypeEnum.LOST_AND_FOUND.getTypeId())) {
+            return lostAndFoundMapper.getLostAndFoundById(id);
+        }
+
+        if (typeId.equals(TypeEnum.SINGLE.getTypeId())) {
+            return singleMapper.getSingleById(id);
+        }
+
+        return null;
     }
 }
