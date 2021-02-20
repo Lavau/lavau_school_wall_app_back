@@ -8,7 +8,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ControllerGlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
-    public String dealWithException() {
+    public String dealWithException(Exception e) {
+        e.printStackTrace();
         return JSON.toJSONString("服务器繁忙！！");
     }
 }

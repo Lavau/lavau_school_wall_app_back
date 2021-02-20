@@ -6,12 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-/**
- * description single 表的实体类
- *
- * @author Leet
- * @date 2020-12-01 16:06
- **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

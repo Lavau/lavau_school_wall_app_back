@@ -8,12 +8,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-/**
- * description 混合数据表 mixed_data 的实体
- *
- * @author Leet
- * @date 2020-12-01 14:26
- **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -59,4 +53,6 @@ public class MixedData implements Serializable {
     private String avatarUrl;
     private String nickname;
     private Boolean Like;
+
+
 }

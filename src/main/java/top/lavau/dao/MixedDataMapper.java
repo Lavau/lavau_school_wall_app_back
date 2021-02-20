@@ -19,7 +19,7 @@ public interface MixedDataMapper {
             "_promulgator_id AS promulgatorId, u._avatar_url AS avatarUrl, u._nickname AS nickname, _is_anonymous " +
             "AS Anonymous, md._stu_id as stuId, _like_num AS likeNum, _comment_num AS commentNum FROM _mixed_data " +
             "AS md LEFT JOIN _type ON md._type_id = _type._id LEFT JOIN _user AS u ON u._stu_id = md._promulgator_id " +
-            "WHERE _id = #{id}")
+            "WHERE md._id = #{id}")
     MixedData getMixedDataById(@Param("id") String id);
 //
 //    /**
