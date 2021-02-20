@@ -12,7 +12,6 @@ import top.lavau.entity.Single;
 import top.lavau.entity.User;
 import top.lavau.myenum.TypeEnum;
 import top.lavau.service.OtherTypesService;
-import top.lavau.util.UuidUtil;
 
 import javax.annotation.Resource;
 import java.util.Date;
@@ -38,23 +37,21 @@ public class OtherTypesServiceImpl implements OtherTypesService {
 
     @Override
     public void insertTypeData(Form form) {
-        String uuid = UuidUtil.acquireUuid();
-        
-        insertMixedData(form, uuid);
+        insertMixedData(form);
 
         if (form.getTypeId().equals(TypeEnum.LOST_AND_FOUND.getTypeId())) {
-            insertLostAndFound(form, uuid);
+            insertLostAndFound(form);
         }
 
         if (form.getTypeId().equals(TypeEnum.SINGLE.getTypeId())) {
-            insertSingle(form, uuid);
+            insertSingle(form);
         }
         
     }
 
-    private void insertSingle(Form form, String uuid) {
+    private void insertSingle(Form form) {
         Single single = new Single();
-        single.setId(uuid);
+        single.setId(form.getId());
         single.setHeight(form.getHeight());
         single.setWeight(form.getWeight());
         single.setSpeciality(form.getSpeciality());
@@ -62,9 +59,9 @@ public class OtherTypesServiceImpl implements OtherTypesService {
         singleMapper.insertSingle(single);
     }
 
-    private void insertMixedData(Form form, String uuid) {
+    private void insertMixedData(Form form) {
         MixedData mixedData = new MixedData();
-        mixedData.setId(uuid);
+        mixedData.setId(form.getId());
         mixedData.setPromulgatorId(User.obtainCurrentUser().getStuId());
         mixedData.setTypeId(form.getTypeId());
         mixedData.setTitle(form.getTitle());
@@ -75,9 +72,9 @@ public class OtherTypesServiceImpl implements OtherTypesService {
         mixedDataMapper.insertMixedData(mixedData);
     }
 
-    private void insertLostAndFound(Form form, String uuid) {
+    private void insertLostAndFound(Form form) {
         LostAndFound lostAndFound = new LostAndFound();
-        lostAndFound.setId(uuid);
+        lostAndFound.setId(form.getId());
         lostAndFound.setMsg(form.getMsg());
         lostAndFoundMapper.insertLostAndFound(lostAndFound);
     }

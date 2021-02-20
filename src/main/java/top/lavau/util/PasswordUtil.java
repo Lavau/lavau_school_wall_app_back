@@ -5,7 +5,6 @@ import org.apache.shiro.util.ByteSource;
 
 /**
  * @author Leet
- * @date 2020-12-7 14:13
  */
 public class PasswordUtil {
 

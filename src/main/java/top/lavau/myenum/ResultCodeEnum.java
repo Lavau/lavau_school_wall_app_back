@@ -6,9 +6,6 @@ import lombok.Getter;
  * description 处理结果code枚举
  *      W0XXX 为自定义状态码
  *      其余采用《阿里泰山版开发手册》中的状态码
- *
- * @author Leet
- * @date 2020-12-06 21:53
  **/
 @Getter
 public enum ResultCodeEnum {
@@ -39,6 +36,11 @@ public enum ResultCodeEnum {
      * explanation: 无权访问
      */
     NO_ACCESS("W0604", "无权访问"),
+    /**
+     * code: W0605
+     * explanation: 已被认领
+     */
+    CLAIMED("W0605", "该一卡通已被认领"),
     /**
      * code: 0000
      * explanation: ok

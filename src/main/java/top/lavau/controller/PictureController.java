@@ -10,16 +10,13 @@ import java.io.*;
 
 /**
  * description Picture controller
- *
- * @author Leet
  **/
 @Slf4j
 @RestController("noLoginPictureController")
-@RequestMapping("/app")
 public class PictureController {
 
-    @RequestMapping("/picture/obtain")
-    public void sendPictureToClient(String typeId, String uuid, String fileName, HttpServletResponse response) {
+    @RequestMapping("/app/picture/obtain")
+    public void sendPictureToClient(int typeId, String uuid, String fileName, HttpServletResponse response) {
         InputStream inputStream = null;
         OutputStream writer = null;
         try {

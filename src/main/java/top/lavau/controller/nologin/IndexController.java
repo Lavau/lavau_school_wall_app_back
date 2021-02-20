@@ -17,8 +17,6 @@ import java.util.ArrayList;
 
 /**
  * description app 首页数据提供
- *
- * @author Leet
  **/
 @Slf4j
 @RestController
@@ -37,12 +35,12 @@ public class IndexController {
                 mixedDataModel.setPictureUrlList(new ArrayList<>(0));
             } else {
                 mixedDataModel.setPictureUrlList(FileUtil.obtainListOfPictureUrl(
-                        mixedDataModel.getTypeId().toString(), mixedDataModel.getId()));
+                        mixedDataModel.getTypeId(), mixedDataModel.getId()));
             }
         });
 
         Result.MyPage<MixedData> page = new Result.MyPage<>(pageInfo.getPageNum(), pageInfo.getPages(), pageInfo.getList());
-        Result<Result.MyPage<MixedData>> result = new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), page);
+        Result<Result.MyPage<MixedData>> result = new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), page, null);
         return JSON.toJSONString(result);
     }
 

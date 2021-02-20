@@ -36,26 +36,26 @@ public class LoginController {
                 currentUser.login(usernamePasswordToken);
             } catch(AccountException accountException){
                 Result<Object> result = new Result<>(ResultCodeEnum.LOGIN_UNSUCCESSFULLY.getCode(),
-                        ResultCodeEnum.LOGIN_UNSUCCESSFULLY.getExplanation(), null);
+                        ResultCodeEnum.LOGIN_UNSUCCESSFULLY.getExplanation(), null, null);
                 return JSON.toJSONString(result);
             }
         }
         Result<String> result = new Result<>(ResultCodeEnum.LOGIN_SUCCESSFULLY.getCode(),
-                ResultCodeEnum.LOGIN_SUCCESSFULLY.getExplanation(), "登录成功");
+                ResultCodeEnum.LOGIN_SUCCESSFULLY.getExplanation(), "登录成功", null);
         return JSON.toJSONString(result);
     }
 
     @GetMapping("/app/noLogin/error")
     public String loginError() {
         Result<Object> result = new Result<>(ResultCodeEnum.LOGIN_UNSUCCESSFULLY.getCode(),
-                ResultCodeEnum.LOGIN_UNSUCCESSFULLY.getExplanation(), null);
+                ResultCodeEnum.LOGIN_UNSUCCESSFULLY.getExplanation(), null, null);
         return JSON.toJSONString(result);
     }
 
     @GetMapping("/app/noLogin/noAccess")
     public String noAccessVisit() {
         Result<Object> result = new Result<>(ResultCodeEnum.NO_ACCESS.getCode(),
-                ResultCodeEnum.NO_ACCESS.getExplanation(),null);
+                ResultCodeEnum.NO_ACCESS.getExplanation(), null, null);
         return JSON.toJSONString(result);
     }
 
@@ -67,9 +67,9 @@ public class LoginController {
         Result<Boolean> result;
 
         if (testUser == null) {
-            result = new Result<>(null, "服务器端不存在登录信息", false);
+            result = new Result<>(null, "服务器端不存在登录信息", false, null);
         } else {
-            result = new Result<>(null, "服务器端存在登录信息", true);
+            result = new Result<>(null, "服务器端存在登录信息", true, null);
         }
 
         return JSON.toJSONString(result);

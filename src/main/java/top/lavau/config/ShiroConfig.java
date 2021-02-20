@@ -14,12 +14,6 @@ import top.lavau.realm.MyRealm;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * description shiro config
- *
- * @author Leet
- * @date 2020-12-01 17:28
- **/
 @Configuration
 public class ShiroConfig {
 

@@ -9,16 +9,14 @@ import top.lavau.dao.EcardMapper;
 import top.lavau.dao.MixedDataMapper;
 import top.lavau.entity.Ecard;
 import top.lavau.entity.MixedData;
+import top.lavau.entity.User;
 import top.lavau.myenum.TypeEnum;
 import top.lavau.service.EcardService;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
-/**
- * description:
- * @author Leet
- */
 @Service
 public class EcardServiceImpl implements EcardService {
 
@@ -59,9 +57,15 @@ public class EcardServiceImpl implements EcardService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
-    public Ecard getEcardByStuId(String stuId) {
-        return ecardMapper.getEcardByStuId(stuId);
+    public void claim(String id) {
+        Ecard ecard = getEcardById(id);
+        ecard.setClaimantId(User.obtainCurrentUser().getStuId());
+        ecard.setGmtClaim(new Date());
+        updateEcard(ecard);
+
+        MixedData mixedData = mixedDataMapper.getMixedDataById(id);
+        mixedData.setAvailable(false);
+        mixedDataMapper.updateMixedData(mixedData);
     }
 
     @Override
@@ -70,11 +74,4 @@ public class EcardServiceImpl implements EcardService {
         return ecardMapper.updateEcard(ecard);
     }
 
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public PageInfo<Ecard> listEcard(int pageNum) {
-        PageHelper.startPage(pageNum, pageSize);
-        List<Ecard> ecardList = ecardMapper.listEcard();
-        return new PageInfo<>(ecardList);
-    }
 }

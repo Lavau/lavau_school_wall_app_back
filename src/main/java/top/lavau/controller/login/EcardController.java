@@ -3,11 +3,15 @@ package top.lavau.controller.login;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.lavau.entity.Ecard;
 import top.lavau.entity.User;
 import top.lavau.entity.result.Result;
+import top.lavau.myenum.ResultCodeEnum;
+import top.lavau.myenum.TypeEnum;
 import top.lavau.service.EcardService;
 import top.lavau.util.UuidUtil;
 
@@ -17,7 +21,6 @@ import java.util.Date;
 
 /**
  * description: 一卡通：添加入库、获取详情、认领
- * @author Leet
  */
 @Slf4j
 @RestController
@@ -28,7 +31,7 @@ public class EcardController {
 
     @PostMapping("/app/login/ecard/publish")
     public String addEcardInfoToDatabase(@Valid Ecard ecard, BindingResult bindingResult){
-        Result<Object> result = new Result<>();
+        Result<Boolean> result = new Result<>();
 
         if (bindingResult.hasErrors()) {
             result.setData(false);
@@ -37,12 +40,13 @@ public class EcardController {
         }
 
         completeEcardInfo(ecard);
+
         ecardService.insertEcard(ecard);
 
         log.info("ecard data of inserted database: {}", ecard.toString());
 
+        result.setData(false);
         result.setMsg("替 Ta 谢谢你！(*^_^*)");
-        result.setData(true);
         return JSON.toJSONString(result);
     }
 
@@ -52,29 +56,38 @@ public class EcardController {
         ecard.setGmtCreate(new Date());
     }
 
-//    /**
-//     * /miniprogram/login/ecard/detail（POST）
-//     * 获取 ecard 详情
-//     * @param openId openId
-//     * @param id id
-//     * @return String
-//     */
-//    @PostMapping("/detail")
-//    public String detailEcard(@RequestParam String openId, @RequestParam String id) {
-//        openId = PasswordUtil.decrypt(openId);
-//        Result result = new Result();
-//
-//        if (ecardService.isClaim(id)) {
-//            result.setSuccess(false);
-//            result.setMsg("该一卡通已被认领");
-//        } else {
-//            result.setObject(ecardService.getEcardById(id));
-//            result.setSuccess(true);
-//        }
-//
-//        return JSON.toJSONString(result);
-//    }
-//
+    @GetMapping("/app/login/ecard/detail")
+    public String detailEcard(@RequestParam String id) {
+        Ecard ecard = ecardService.getEcardById(id);
+        Result<Ecard> result = new Result<>();
+
+        if (ecard.getGmtClaim() == null) {
+            log.info("ecard:{}", ecard.toString());
+            result.setData(ecard);
+            result.setSuccess(true);
+        } else {
+            result.setSuccess(false);
+        }
+
+        return JSON.toJSONString(result);
+    }
+
+    @GetMapping("/app/login/ecard/claim")
+    public String claimEcard(@RequestParam String id) {
+        Ecard ecard = ecardService.getEcardById(id);
+        Result<Ecard> result = new Result<>();
+
+        if (ecard.getGmtClaim() == null) {
+            result.setSuccess(true);
+
+            ecardService.claim(id);
+        } else {
+            result.setSuccess(false);
+        }
+
+        return JSON.toJSONString(result);
+    }
+
 //    /**
 //     * /miniprogram/login/ecard/claim（POST）
 //     * 认领 ecard

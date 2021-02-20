@@ -12,12 +12,6 @@ import top.lavau.service.CollegeService;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * description
- *
- * @author Leet
- * @date 2020-12-01 17:24
- **/
 @Slf4j
 @RestController
 public class CollegeController {
@@ -27,7 +21,7 @@ public class CollegeController {
 
     @GetMapping("/app/noLogin/college/list")
     public String listCollege() {
-        Result<List<College>> result = new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), collegeService.listCollege());
+        Result<List<College>> result = new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), collegeService.listCollege(), null);
         return JSON.toJSONString(result);
     }
 }

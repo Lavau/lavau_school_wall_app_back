@@ -6,12 +6,6 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 
-/**
- * description 处理结果
- *
- * @author Leet
- * @date 2020-12-06 21:49
- **/
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -30,6 +24,8 @@ public class Result<T> {
      * 返回的泛型结果
      */
     private T data;
+
+    private Boolean success;
 
     @Data
     @AllArgsConstructor

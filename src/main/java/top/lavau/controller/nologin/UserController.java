@@ -20,9 +20,6 @@ import java.util.Date;
 /**
  * description user controller
  *      用户注册
- *
- * @author Leet
- * @date 2020-12-06 21:44
  **/
 @Slf4j
 @RestController
@@ -40,7 +37,7 @@ public class UserController {
     public String register(@Valid User user, BindingResult validResult) {
         if (validResult.hasErrors()) {
             return JSON.toJSONString(new Result<>(ResultCodeEnum.VALID_ERROR.getCode(),
-                    ResultCodeEnum.VALID_ERROR.getExplanation(), null));
+                    ResultCodeEnum.VALID_ERROR.getExplanation(), null, null));
         }
 
         String avatarUrl = "http://localhost:8080/avatar/" + user.getStuId();
@@ -52,7 +49,7 @@ public class UserController {
         log.info("At {}, {} register successfully!",
                 new SimpleDateFormat("yyyy-MM-dd hh:mm").format(user.getGmtCreate()), user.getStuId());
 
-        Result<Object> result = new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), null);
+        Result<Object> result = new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), null, null);
         return JSON.toJSONString(result);
     }
 

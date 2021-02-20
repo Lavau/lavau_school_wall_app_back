@@ -6,10 +6,6 @@ import top.lavau.entity.MixedData;
 
 import java.util.List;
 
-/**
- * description:
- * @author Leet
- */
 @Mapper
 public interface MixedDataMapper {
 
@@ -17,13 +13,14 @@ public interface MixedDataMapper {
             "_is_anonymous, _stu_id) VALUES (#{md.id}, #{md.promulgatorId}, #{md.typeId}, #{md.title}, " +
             "#{md.description}, #{md.pictureNum}, #{md.gmtCreate}, #{md.Anonymous}, #{md.stuId})")
     void insertMixedData(@Param("md") MixedData mixedDataModel);
-//
-//    @Select("SELECT md.id AS id, i_id AS iId, promulgator_id AS promulgatorId, type_id AS typeId, title, description, " +
-//            "picture_num AS pictureNum, like_num AS likeNum, view_num AS viewNum, comment_num AS commentNum, " +
-//            "md.gmt_create AS gmtCreate, is_available AS Available, is_anonymous AS Anonymous, is_audit AS Audit, " +
-//            "md.stu_id AS stuId, u.avatar_url AS avatarUrl, u.nickname AS nickname FROM mixed_data AS md LEFT JOIN " +
-//            "_user AS u ON md.promulgator_id = u.stu_id WHERE id = #{id}")
-//    MixedData getMixedDataById(@Param("id") String id);
+
+    @Select("SELECT md._id AS id, _type_id AS typeId, _chinese_name AS typeName, _picture_num AS pictureNum, " +
+            "_description AS description, _title AS title, _view_num AS viewNum, md._gmt_create AS gmtCreate, " +
+            "_promulgator_id AS promulgatorId, u._avatar_url AS avatarUrl, u._nickname AS nickname, _is_anonymous " +
+            "AS Anonymous, md._stu_id as stuId, _like_num AS likeNum, _comment_num AS commentNum FROM _mixed_data " +
+            "AS md LEFT JOIN _type ON md._type_id = _type._id LEFT JOIN _user AS u ON u._stu_id = md._promulgator_id " +
+            "WHERE _id = #{id}")
+    MixedData getMixedDataById(@Param("id") String id);
 //
 //    /**
 //     * 根据 typeId 获取信息
@@ -38,13 +35,10 @@ public interface MixedDataMapper {
 //            "#{typeId} ORDER BY md.gmt_create DESC")
 //    List<MixedData> listDataByTypeId(@Param("typeId") String typeId);
 //
-//    /**
-//     * 更改  mixed_data 表
-//     * @param mixedData MixedDataModel
-//     */
-//    @Update("UPDATE mixed_data SET like_num = #{md.likeNum}, view_num = #{md.viewNum}, comment_num = " +
-//            "#{md.commentNum}, is_available = #{md.Available} WHERE id = #{md.id}")
-//    void updateMixedData(@Param("md") MixedData mixedData);
+
+    @Update("UPDATE mixed_data SET like_num = #{md.likeNum}, view_num = #{md.viewNum}, comment_num = " +
+            "#{md.commentNum}, is_available = #{md.Available} WHERE id = #{md.id}")
+    void updateMixedData(@Param("md") MixedData mixedData);
 //
 //    /**
 //     * 根据 id 删除
