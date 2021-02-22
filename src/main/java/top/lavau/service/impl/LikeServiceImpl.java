@@ -29,11 +29,11 @@ public class LikeServiceImpl implements LikeService {
         if (isLike) {
             like(id, stuId);
         } else {
-            cancleLike(id, stuId);
+            cancelLike(id, stuId);
         }
     }
 
-    private void cancleLike(String id, String stuId) {
+    private void cancelLike(String id, String stuId) {
         likeMapper.deleteLikeByIdAndStuId(id, stuId);
 
         MixedData mixedData = mixedDataMapper.getMixedDataById(id);
@@ -48,5 +48,11 @@ public class LikeServiceImpl implements LikeService {
         MixedData mixedData = mixedDataMapper.getMixedDataById(id);
         mixedData.setLikeNum(mixedData.getLikeNum() + 1);
         mixedDataMapper.updateMixedData(mixedData);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public Integer getLikeNumByStuId(String stuId) {
+        return likeMapper.getLikeNumByStuId(stuId);
     }
 }

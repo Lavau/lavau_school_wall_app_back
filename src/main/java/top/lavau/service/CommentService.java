@@ -13,4 +13,8 @@ public interface CommentService {
     void deleteCommentByParentId(String parentId);
 
     Comment getCommentById(String id);
+
+    List<Comment> listCommentsOfRepliedComment(String parentId);
+
+    void deleteCommentById(String id);
 }

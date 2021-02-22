@@ -54,5 +54,4 @@ public class MixedData implements Serializable {
     private String nickname;
     private Boolean Like;
 
-
 }

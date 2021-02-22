@@ -45,4 +45,18 @@ public class CommentServiceImpl implements CommentService {
     public Comment getCommentById(String id) {
         return commentMapper.getCommentById(id);
     }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public List<Comment> listCommentsOfRepliedComment(String parentId) {
+        List<Comment> comments = commentMapper.listCommentsOfRepliedComment(parentId);
+        comments.forEach(comment -> comment.setMine(comment.getPromulgatorId().equals(User.obtainCurrentUser().getStuId())));
+        return comments;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteCommentById(String id) {
+        commentMapper.deleteCommentById(id);
+    }
 }

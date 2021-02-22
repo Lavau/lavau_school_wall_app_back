@@ -6,7 +6,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import top.lavau.entity.Comment;
-import top.lavau.entity.MixedData;
 import top.lavau.entity.User;
 import top.lavau.entity.result.Result;
 import top.lavau.service.CommentService;
@@ -65,7 +64,7 @@ public class CommentController {
     }
 
     @GetMapping("/app/login/comment/delete/typeData")
-    public String deleteCommentsOfMixedData(@RequestParam String parentId) {
+    public String deleteCommentOfMixedData(@RequestParam String parentId) {
         Result<List<Comment>> result = new Result<>();
 
         if (commentService.getCommentById(parentId) == null) {
@@ -97,6 +96,32 @@ public class CommentController {
         comment.setGmtCreate(new Date());
 
         commentService.insert(comment);
+
+        result.setSuccess(true);
+        return JSON.toJSONString(result);
+    }
+
+    @GetMapping("/app/login/comment/reply/list")
+    public String listCommentsOfRepliedComment(@RequestParam String parentId) {
+        List<Comment> comments = commentService.listCommentsOfRepliedComment(parentId);
+
+        Result<List<Comment>> result = new Result<>();
+        result.setData(comments);
+        result.setSuccess(true);
+
+        return JSON.toJSONString(result);
+    }
+
+    @GetMapping("/app/login/comment/reply/delete")
+    public String deleteCommentOfRepliedComment(@RequestParam String id) {
+        Result<List<Comment>> result = new Result<>();
+
+        if (commentService.getCommentById(id) == null) {
+            result.setSuccess(false);
+            return JSON.toJSONString(result);
+        }
+
+        commentService.deleteCommentById(id);
 
         result.setSuccess(true);
         return JSON.toJSONString(result);
