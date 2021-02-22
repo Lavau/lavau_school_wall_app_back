@@ -15,9 +15,6 @@ import top.lavau.util.FileUtil;
 
 import java.util.ArrayList;
 
-/**
- * description app 首页数据提供
- **/
 @Slf4j
 @RestController
 public class IndexController {

@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.lavau.controller.login.OtherTypesController.Form;
+import top.lavau.dao.LikeMapper;
 import top.lavau.dao.LostAndFoundMapper;
 import top.lavau.dao.MixedDataMapper;
 import top.lavau.dao.SingleMapper;
@@ -29,6 +30,9 @@ public class OtherTypesServiceImpl implements OtherTypesService {
     
     @Resource
     private SingleMapper singleMapper;
+
+    @Resource
+    private LikeMapper likeMapper;
 
     @Override
     @Transactional(rollbackFor = Exception.class)
@@ -77,21 +81,39 @@ public class OtherTypesServiceImpl implements OtherTypesService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public MixedData getMixedDataByIdAndTypeId(String id, Integer typeId) {
+        String stuId = User.obtainCurrentUser().getStuId();
+        MixedData mixedData = null;
+
         boolean flag = typeId.equals(TypeEnum.PERSONAL_PUBLICITY.getTypeId()) ||
                 typeId.equals(TypeEnum.THANK_OR_RIDICULE.getTypeId()) ||
                 typeId.equals(TypeEnum.SEEK_HELP.getTypeId());
         if (flag) {
-            return mixedDataMapper.getMixedDataById(id);
+            mixedData = mixedDataMapper.getMixedDataById(id);
+            mixedData.setLike(likeMapper.getLikeByIdAndStuId(id, stuId) != null);
         }
 
         if (typeId.equals(TypeEnum.LOST_AND_FOUND.getTypeId())) {
-            return lostAndFoundMapper.getLostAndFoundById(id);
+            mixedData = lostAndFoundMapper.getLostAndFoundById(id);
+            mixedData.setLike(likeMapper.getLikeByIdAndStuId(id, stuId) != null);
         }
 
         if (typeId.equals(TypeEnum.SINGLE.getTypeId())) {
-            return singleMapper.getSingleById(id);
+            mixedData = singleMapper.getSingleById(id);
+            mixedData.setLike(likeMapper.getLikeByIdAndStuId(id, stuId) != null);
         }
 
-        return null;
+        return mixedData;
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public MixedData getMixedDataById(String id) {
+        return mixedDataMapper.getMixedDataById(id);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void updateMixedData(MixedData mixedData) {
+        mixedDataMapper.updateMixedData(mixedData);
     }
 }

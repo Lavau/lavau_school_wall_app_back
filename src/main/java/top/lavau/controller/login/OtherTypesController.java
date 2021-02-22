@@ -12,12 +12,14 @@ import org.springframework.web.multipart.MultipartFile;
 import top.lavau.entity.Ecard;
 import top.lavau.entity.MixedData;
 import top.lavau.entity.result.Result;
+import top.lavau.service.LikeService;
 import top.lavau.service.OtherTypesService;
 import top.lavau.util.FileUtil;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -26,6 +28,9 @@ public class OtherTypesController {
 
     @Resource
     private OtherTypesService otherTypesService;
+
+    @Resource
+    private LikeService likeService;
 
     @PostMapping("/app/login/others/publish")
     public String addTypeDataInfoToDatabase(@Valid Form form, BindingResult bindingResult,
@@ -54,12 +59,29 @@ public class OtherTypesController {
         MixedData mixedData = otherTypesService.getMixedDataByIdAndTypeId(id, typeId);
 
         log.info("typeId: {}, id: {}, mixedData:{}", typeId, id, mixedData.toString());
+        
+        if (new Integer(0).equals(mixedData.getPictureNum())) {
+            mixedData.setPictureUrlList(new ArrayList<>(0));
+        } else {
+            mixedData.setPictureUrlList(FileUtil.obtainListOfPictureUrl(mixedData.getTypeId(), mixedData.getId()));
+        }
+
+        mixedData.setViewNum(mixedData.getViewNum() + 1);
+        otherTypesService.updateMixedData(mixedData);
 
         Result<MixedData> result = new Result<>();
-
         result.setData(mixedData);
         result.setSuccess(true);
 
+        return JSON.toJSONString(result);
+    }
+
+    @GetMapping("/app/login/others/like")
+    public String likeOrCancelLike(@RequestParam Boolean isLike, @RequestParam String id) {
+        likeService.like(isLike, id);
+
+        Result<Boolean> result = new Result<>();
+        result.setSuccess(true);
         return JSON.toJSONString(result);
     }
 
