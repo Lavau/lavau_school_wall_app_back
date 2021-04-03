@@ -52,7 +52,7 @@ public class FileUtil {
         List<String> pictureNameList = FileUtil.findAllPictureNames(typeId, uuid);
         List<String> pictureUrlList = new ArrayList<>();
         for(String pictureName : pictureNameList){
-            pictureUrlList.add(new StringBuilder("http://192.168.1.105:8080/app/picture/obtain?typeId=").append(typeId).
+            pictureUrlList.add(new StringBuilder("http://127.0.0.1:8080/app/picture/obtain?typeId=").append(typeId).
                     append("&uuid=").append(uuid).append("&fileName=").append(pictureName).toString());
         }
         return pictureUrlList;

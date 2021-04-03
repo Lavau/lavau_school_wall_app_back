@@ -12,11 +12,6 @@ import top.leeti.service.IndexService;
 import javax.annotation.Resource;
 import java.util.List;
 
-/**
- * program: schoolWall
- * @author: Leet
- * create: 2020-10-13 20:42
- **/
 @Service
 public class IndexServiceImpl implements IndexService {
 

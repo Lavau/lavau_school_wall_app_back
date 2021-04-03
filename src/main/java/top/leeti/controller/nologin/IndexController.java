@@ -12,6 +12,7 @@ import top.leeti.entity.result.Result;
 import top.leeti.myenum.ResultCodeEnum;
 import top.leeti.service.IndexService;
 import top.leeti.util.FileUtil;
+import top.leeti.util.TimeStampUtil;
 
 import java.util.ArrayList;
 
@@ -22,7 +23,7 @@ public class IndexController {
     @Autowired
     private IndexService indexService;
 
-    @GetMapping("/app/noLogin/index")
+    @GetMapping("/miniprogram/noLogin/index")
     public String obtainIndexPageData(@RequestParam(defaultValue = "1") int pageNum) {
         PageInfo<MixedData> pageInfo = indexService.listIndexData(pageNum);
 
@@ -34,10 +35,11 @@ public class IndexController {
                 mixedDataModel.setPictureUrlList(FileUtil.obtainListOfPictureUrl(
                         mixedDataModel.getTypeId(), mixedDataModel.getId()));
             }
+            mixedDataModel.setCreateTime(TimeStampUtil.timeStamp(mixedDataModel.getGmtCreate()));
         });
 
         Result.MyPage<MixedData> page = new Result.MyPage<>(pageInfo.getPageNum(), pageInfo.getPages(), pageInfo.getList());
-        Result<Result.MyPage<MixedData>> result = new Result<>(ResultCodeEnum.OK.getCode(), ResultCodeEnum.OK.getExplanation(), page, null);
+        Result<Result.MyPage<MixedData>> result = new Result<>(null, null, page, null);
         return JSON.toJSONString(result);
     }
 

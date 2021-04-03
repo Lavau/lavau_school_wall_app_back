@@ -1,10 +1,14 @@
 package top.leeti.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import top.leeti.dao.CommentMapper;
 import top.leeti.entity.Comment;
+import top.leeti.entity.MixedData;
 import top.leeti.entity.User;
 import top.leeti.service.CommentService;
 
@@ -14,6 +18,10 @@ import java.util.List;
 @Slf4j
 @Service
 public class CommentServiceImpl implements CommentService {
+
+    @Value("${page.size}")
+    private int pageSize;
+
     @Resource
     private CommentMapper commentMapper;
 
@@ -25,13 +33,14 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<Comment> listCommentsOfMixedData(String attachedId) {
+    public PageInfo<Comment> listCommentsOfMixedData(String attachedId, int pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
         List<Comment> comments = commentMapper.listCommentsOfMixedData(attachedId);
         comments.forEach(comment -> {
-            comment.setCommentNum(commentMapper.getCommentNumByParentId(comment.getId()) - 1);
+            comment.setCommentNum(commentMapper.getCommentNumByParentId(comment.getId()));
             comment.setMine(comment.getPromulgatorId().equals(User.obtainCurrentUser().getStuId()));
         });
-        return comments;
+        return new PageInfo<>(comments);
     }
 
     @Override
@@ -48,10 +57,13 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<Comment> listCommentsOfRepliedComment(String parentId) {
+    public PageInfo<Comment> listCommentsOfRepliedComment(String parentId, int pageNum) {
+        PageHelper.startPage(pageNum, pageSize);
         List<Comment> comments = commentMapper.listCommentsOfRepliedComment(parentId);
-        comments.forEach(comment -> comment.setMine(comment.getPromulgatorId().equals(User.obtainCurrentUser().getStuId())));
-        return comments;
+        comments.forEach(comment ->
+            comment.setMine(comment.getPromulgatorId().equals(User.obtainCurrentUser().getStuId()))
+        );
+        return new PageInfo<>(comments);
     }
 
     @Override

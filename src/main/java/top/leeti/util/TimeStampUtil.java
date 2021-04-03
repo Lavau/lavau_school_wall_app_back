@@ -3,11 +3,6 @@ package top.leeti.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-/**
- * description: 时间戳转换工具类
- * @author Leet
- * create: 2020-11-04 18:23
- **/
 public class TimeStampUtil {
 
     public static String timeStamp(Date date) {
@@ -22,11 +17,11 @@ public class TimeStampUtil {
 
         // 判断后，返回相应的值
         if (second < 60) {
-            return String.format("%d秒前", second);
+            return String.format("%d 秒前", second);
         } else if (minute < 60) {
-            return String.format("%d分钟前", minute);
+            return String.format("%d 分钟前", minute);
         } else if (hour < 24) {
-            return String.format("%d小时前", hour);
+            return String.format("%d 小时前", hour);
         } else {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
             return dateFormat.format(date);

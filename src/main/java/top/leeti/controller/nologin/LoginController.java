@@ -6,67 +6,53 @@ import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.apache.shiro.subject.Subject;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-import top.leeti.entity.User;
+import org.springframework.web.bind.annotation.*;
 import top.leeti.entity.result.Result;
 import top.leeti.myenum.ResultCodeEnum;
+import top.leeti.util.WechatUtil;
+
+import java.util.Map;
 
 @Slf4j
 @RestController
+@RequestMapping("/miniprogram/noLogin/")
 public class LoginController {
+    
+    @PostMapping("login")
+    public String login(@RequestParam String code) {
+        Map<String, String> map = WechatUtil.acquireSessionKeyAndOpenId(code);
+        String openId = map.get("openId");
 
-    /**
-     * 通过 "学号 + 密码" 登录
-     */
-    @PostMapping("/app/noLogin/login")
-    public String login(@RequestParam String stuId, @RequestParam String password) {
-        UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(stuId, password);
-        Subject currentUser = SecurityUtils.getSubject();
-        // isAuthenticated() 判断 currentUser 是否已经被认证
-        if(!currentUser.isAuthenticated()){
+        Result<String> result = null;
+
+        if (openId == null) {
+            result = new Result<>(null, "获取openId失败", null, false);
+        } else {
+            UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(openId, "");
+            Subject currentUser = SecurityUtils.getSubject();
             try{
                 currentUser.login(usernamePasswordToken);
-            } catch(AccountException accountException){
-                Result<Object> result = new Result<>(ResultCodeEnum.LOGIN_UNSUCCESSFULLY.getCode(),
-                        ResultCodeEnum.LOGIN_UNSUCCESSFULLY.getExplanation(), null, null);
+                result = new Result<>(null, null, "registered", true);
+            } catch(AccountException accountException) {
+                result = new Result<>(null, null, "unregistered", false);
                 return JSON.toJSONString(result);
             }
         }
-        Result<String> result = new Result<>(ResultCodeEnum.LOGIN_SUCCESSFULLY.getCode(),
-                ResultCodeEnum.LOGIN_SUCCESSFULLY.getExplanation(), "登录成功", null);
+
         return JSON.toJSONString(result);
     }
 
-    @GetMapping("/app/noLogin/error")
+    @GetMapping("/error")
     public String loginError() {
         Result<Object> result = new Result<>(ResultCodeEnum.LOGIN_UNSUCCESSFULLY.getCode(),
                 ResultCodeEnum.LOGIN_UNSUCCESSFULLY.getExplanation(), null, null);
         return JSON.toJSONString(result);
     }
 
-    @GetMapping("/app/noLogin/noAccess")
+    @GetMapping("/noAccess")
     public String noAccessVisit() {
         Result<Object> result = new Result<>(ResultCodeEnum.NO_ACCESS.getCode(),
                 ResultCodeEnum.NO_ACCESS.getExplanation(), null, null);
-        return JSON.toJSONString(result);
-    }
-
-    @GetMapping("/app/noLogin/isLogin")
-    public String obtainLoginStatusOfUser() {
-        Subject subject = SecurityUtils.getSubject();
-        User testUser = (User)subject.getPrincipal();
-
-        Result<Boolean> result;
-
-        if (testUser == null) {
-            result = new Result<>(null, "服务器端不存在登录信息", false, null);
-        } else {
-            result = new Result<>(null, "服务器端存在登录信息", true, null);
-        }
-
         return JSON.toJSONString(result);
     }
 

@@ -9,12 +9,6 @@ import top.leeti.service.UserService;
 
 import javax.annotation.Resource;
 
-/**
- * description: UserService 的实现类
- *
- * @author leet
- * @date 2020/12/1 20:35
- */
 @Slf4j
 @Service
 public class UserServiceImpl implements UserService {
@@ -32,5 +26,11 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     public User getUserByStuIdAndPassword(String stuId, String enPassword) {
         return userMapper.getUserByStuIdAndPassword(stuId, enPassword);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public User getUserByOpenId(String openId) {
+        return userMapper.getUserByOpenId(openId);
     }
 }

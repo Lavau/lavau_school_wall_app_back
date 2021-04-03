@@ -7,6 +7,7 @@ import top.leeti.dao.MixedDataMapper;
 import top.leeti.entity.Like;
 import top.leeti.entity.MixedData;
 import top.leeti.entity.User;
+import top.leeti.exception.RecordOfDataBaseNoFoundException;
 import top.leeti.service.LikeService;
 
 import javax.annotation.Resource;
@@ -23,29 +24,33 @@ public class LikeServiceImpl implements LikeService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void like(Boolean isLike, String id) {
-        String stuId = User.obtainCurrentUser().getStuId();
+    public void like(Boolean isLike, String id) throws RecordOfDataBaseNoFoundException {
+        MixedData mixedData = mixedDataMapper.getMixedDataById(id);
+
+        if (mixedData == null) {
+            throw new RecordOfDataBaseNoFoundException("该记录不存在");
+        }
 
         if (isLike) {
-            like(id, stuId);
+            like(mixedData);
         } else {
-            cancelLike(id, stuId);
+            cancelLike(mixedData);
         }
     }
 
-    private void cancelLike(String id, String stuId) {
-        likeMapper.deleteLikeByIdAndStuId(id, stuId);
+    private void cancelLike(MixedData mixedData) {
+        String stuId = User.obtainCurrentUser().getStuId();
+        likeMapper.deleteLikeByIdAndStuId(mixedData.getId(), stuId);
 
-        MixedData mixedData = mixedDataMapper.getMixedDataById(id);
         mixedData.setLikeNum(mixedData.getLikeNum() - 1);
         mixedDataMapper.updateMixedData(mixedData);
     }
 
-    private void like(String id, String stuId) {
-        Like like = new Like(id, stuId, new Date());
+    private void like(MixedData mixedData) {
+        String stuId = User.obtainCurrentUser().getStuId();
+        Like like = new Like(mixedData.getId(), stuId, new Date());
         likeMapper.insertLike(like);
 
-        MixedData mixedData = mixedDataMapper.getMixedDataById(id);
         mixedData.setLikeNum(mixedData.getLikeNum() + 1);
         mixedDataMapper.updateMixedData(mixedData);
     }

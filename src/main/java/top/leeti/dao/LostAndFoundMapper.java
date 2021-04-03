@@ -1,9 +1,6 @@
 package top.leeti.dao;
 
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 import top.leeti.entity.LostAndFound;
 
 @Mapper
@@ -19,4 +16,8 @@ public interface LostAndFoundMapper {
 
     @Insert("insert _lost_and_found (_id, _msg) values (#{laf.id}, #{laf.msg})")
     boolean insertLostAndFound(@Param("laf") LostAndFound lostAndFound);
+
+    @Update("UPDATE _lost_and_found SET _claimant_id = #{laf.claimantId}, _gmt_claim = #{laf.gmtClaim} " +
+            "WHERE _id = #{laf.id}")
+    boolean updateLostAndFound(@Param("laf") LostAndFound lostAndFound);
 }

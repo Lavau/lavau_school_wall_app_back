@@ -9,8 +9,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import top.leeti.entity.LostAndFound;
 import top.leeti.entity.MixedData;
+import top.leeti.entity.User;
 import top.leeti.entity.result.Result;
+import top.leeti.exception.RecordOfDataBaseNoFoundException;
+import top.leeti.myenum.TypeEnum;
 import top.leeti.service.LikeService;
 import top.leeti.service.OtherTypesService;
 import top.leeti.util.FileUtil;
@@ -19,6 +23,7 @@ import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Slf4j
@@ -31,7 +36,7 @@ public class OtherTypesController {
     @Resource
     private LikeService likeService;
 
-    @PostMapping("/app/login/others/publish")
+    @PostMapping("/miniprogram/login/others/publish")
     public String addTypeDataInfoToDatabase(@Valid Form form, BindingResult bindingResult,
                         @RequestParam List<MultipartFile> pictures) throws Exception {
         Result<Object> result = new Result<>();
@@ -53,11 +58,11 @@ public class OtherTypesController {
         return JSON.toJSONString(result);
     }
 
-    @GetMapping("/app/login/others/detail")
+    @PostMapping("/miniprogram/login/others/detail")
     public String obtainDetailInfo(@RequestParam String id, @RequestParam Integer typeId) {
-        MixedData mixedData = otherTypesService.getMixedDataByIdAndTypeId(id, typeId);
+        log.info("typeId: {}, id: {}", typeId, id);
 
-        log.info("typeId: {}, id: {}, mixedData:{}", typeId, id, mixedData.toString());
+        MixedData mixedData = otherTypesService.getMixedDataByIdAndTypeId(id, typeId);
         
         if (new Integer(0).equals(mixedData.getPictureNum())) {
             mixedData.setPictureUrlList(new ArrayList<>(0));
@@ -75,15 +80,41 @@ public class OtherTypesController {
         return JSON.toJSONString(result);
     }
 
-    @GetMapping("/app/login/others/like")
+    @PostMapping("/miniprogram/login/others/like")
     public String likeOrCancelLike(@RequestParam Boolean isLike, @RequestParam String id) {
         likeService.like(isLike, id);
 
         Result<Boolean> result = new Result<>();
         result.setSuccess(true);
+        result.setMsg(isLike ? "点赞成功" : "取消点赞成功");
         return JSON.toJSONString(result);
     }
 
+    @PostMapping("/miniprogram/login/others/claim")
+    public String claimThing(@RequestParam String id) {
+        LostAndFound lostAndFound = (LostAndFound)otherTypesService.getMixedDataByIdAndTypeId(id,
+                TypeEnum.LOST_AND_FOUND.getTypeId());
+
+        Result<String> result = new Result<>();
+        if (lostAndFound == null) {
+            throw new RecordOfDataBaseNoFoundException("id: " + id + ", 该失物招领信息在数据库中不存在");
+        } else {
+            if (lostAndFound.getAvailable()) {
+                lostAndFound.setGmtClaim(new Date());
+                lostAndFound.setClaimantId(User.obtainCurrentUser().getStuId());
+                lostAndFound.setAvailable(false);
+
+                otherTypesService.updateMixedData(lostAndFound);
+
+                result.setSuccess(true);
+                result.setMsg("认领成功");
+            } else {
+                result.setSuccess(false);
+                result.setMsg("该物品已被认领");
+            }
+            return JSON.toJSONString(result);
+        }
+    }
 
     @Data
     public static class Form {

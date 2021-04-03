@@ -27,11 +27,13 @@ public class MyRealm extends AuthorizingRealm {
     protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken authenticationToken)
             throws AuthenticationException {
         UsernamePasswordToken usernamePasswordToken = (UsernamePasswordToken) authenticationToken;
-        User user = userService.getUserByStuIdAndPassword(usernamePasswordToken.getUsername(),
-                PasswordUtil.encrypt(String.valueOf(usernamePasswordToken.getPassword())));
+
+        User user = userService.getUserByOpenId(usernamePasswordToken.getUsername());
+
         if (user == null) {
             throw new AccountException();
         }
+
         ByteSource saltOfCredential = ByteSource.Util.bytes(user.getStuId());
         return new SimpleAuthenticationInfo(user, String.valueOf(usernamePasswordToken.getPassword()),
                 saltOfCredential, getName());

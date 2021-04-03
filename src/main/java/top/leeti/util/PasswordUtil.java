@@ -3,9 +3,6 @@ package top.leeti.util;
 import org.apache.shiro.crypto.hash.SimpleHash;
 import org.apache.shiro.util.ByteSource;
 
-/**
- * @author Leet
- */
 public class PasswordUtil {
 
     private static final String HASH_ALGORITHM_NAME = "MD5";

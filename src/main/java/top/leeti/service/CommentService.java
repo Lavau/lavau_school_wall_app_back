@@ -1,5 +1,7 @@
 package top.leeti.service;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageInfo;
 import top.leeti.entity.Comment;
 
 import java.util.List;
@@ -8,13 +10,13 @@ public interface CommentService {
 
     void insert(Comment comment);
 
-    List<Comment> listCommentsOfMixedData(String attachedId);
+    PageInfo<Comment> listCommentsOfMixedData(String attachedId, int pageNum);
 
     void deleteCommentByParentId(String parentId);
 
     Comment getCommentById(String id);
 
-    List<Comment> listCommentsOfRepliedComment(String parentId);
+    PageInfo<Comment> listCommentsOfRepliedComment(String parentId, int pageNum);
 
     void deleteCommentById(String id);
 }

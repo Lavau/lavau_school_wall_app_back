@@ -115,5 +115,9 @@ public class OtherTypesServiceImpl implements OtherTypesService {
     @Transactional(rollbackFor = Exception.class)
     public void updateMixedData(MixedData mixedData) {
         mixedDataMapper.updateMixedData(mixedData);
+
+        if (mixedData.getTypeId().equals(TypeEnum.LOST_AND_FOUND.getTypeId())) {
+            lostAndFoundMapper.updateLostAndFound((LostAndFound) mixedData);
+        }
     }
 }
